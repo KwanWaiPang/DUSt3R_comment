@@ -21,7 +21,10 @@
 ~~~
 conda create -n dust3r python=3.11 cmake=3.14.0
 conda activate dust3r 
-conda install pytorch torchvision pytorch-cuda=11.7 -c pytorch -c nvidia  # use the correct version of cuda for your system
+# conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia  # use the correct version of cuda for your system
+# conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
+conda remove --name dust3r --all
+
 
 pip install -r requirements.txt
 # Optional: you can also install additional packages to:
@@ -30,6 +33,13 @@ pip install -r requirements.txt
 # - add required packages for visloc.py
 
 pip install -r requirements_optional.txt
+
+
+# DUST3R relies on RoPE positional embeddings for which you can compile some cuda kernels for faster runtime.
+cd croco/models/curope/
+python setup.py build_ext --inplace
+cd ../../../
+
 ~~~
 
 * 下载权重
@@ -42,6 +52,11 @@ wget https://download.europe.naverlabs.com/ComputerVision/DUSt3R/DUSt3R_ViTLarge
 ~~~
 cd /home/gwp/dust3r/
 conda activate dust3r 
+
+CUDA_VISIBLE_DEVICES=0 python3 demo.py --weights checkpoints/DUSt3R_ViTLarge_BaseDecoder_512_linear.pth
+
+http://localhost:7860/
+
 python3 demo.py --model_name DUSt3R_ViTLarge_BaseDecoder_512_dpt
 
 # Use --weights to load a checkpoint from a local file, eg --weights checkpoints/DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth
@@ -50,3 +65,16 @@ python3 demo.py --model_name DUSt3R_ViTLarge_BaseDecoder_512_dpt
 # Use --server_port to change the port, by default it will search for an available port starting at 7860
 # Use --device to use a different device, by default it's "cuda"
 ~~~
+
+* 注意可能出现的bug比如'''RuntimeError: Numpy is not available'''大几率是numpy的问题~
+~~~
+pip install numpy==1.24.1
+~~~
+
+#测试效果
+
+<div align="center">
+  <img src="./assets/微信截图_20241225224243.png" width="80%" />
+  <img src="./assets/微信截图_20241225224321.png" width="80%" />
+  <img src="./assets/微信截图_20241225224331.png" width="80%" />
+</div>
