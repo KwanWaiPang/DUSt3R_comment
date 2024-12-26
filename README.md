@@ -48,7 +48,7 @@ mkdir -p checkpoints/
 wget https://download.europe.naverlabs.com/ComputerVision/DUSt3R/DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth -P checkpoints/
 ~~~
 
-* 运行测试（注意服务器中要借助MobaXterm进行可视化）
+* 运行测试（注意采用的是网页UI）
 ~~~
 cd /home/gwp/dust3r/
 conda activate dust3r 
